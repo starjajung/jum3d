@@ -1,4 +1,4 @@
-﻿var util = require("util"),
+﻿﻿var util = require("util"),
         http = require("http"),
         url = require("url"),
         path = require("path"),
@@ -7,13 +7,17 @@
 
 http.createServer(function (request, response) {
         var uri = url.parse(request.url).pathname;
+		
+		if(uri == '/')
+			uri = '/index.html';
+		
         var filename = path.join(process.cwd(), uri);
         util.puts("filename : " + filename);
         path.exists(filename, function(exists){
                 if(!exists){
-                        response.sendHeader(404,{"Content-type":"text/plain"} );
+                        response.writeHead(404,{"Content-type":"text/plain"} );
                         response.write("404 Not Found\n");
-                        response.close();
+                        response.end();
                         return;
                 }
 
@@ -26,7 +30,7 @@ http.createServer(function (request, response) {
                                 return;
                         }
 
-                        util.puts("data : " + data);
+                        //util.puts("data : " + data);
                         response.statusCode = 200;
                         response.write(data, "binary");
                         response.end();
