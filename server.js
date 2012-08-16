@@ -5,7 +5,7 @@
         fs = require("fs");
 
 
-http.createServer(function (request, response) {
+var server = http.createServer(function (request, response) {
         var uri = url.parse(request.url).pathname;
 		
 		if(uri == '/')
@@ -13,7 +13,8 @@ http.createServer(function (request, response) {
 		
         var filename = path.join(process.cwd(), uri);
         util.puts("filename : " + filename);
-        path.exists(filename, function(exists){
+       
+	    path.exists(filename, function(exists){
                 if(!exists){
                         response.writeHead(404,{"Content-type":"text/plain"} );
                         response.write("404 Not Found\n");
@@ -36,4 +37,7 @@ http.createServer(function (request, response) {
                         response.end();
                 });
         });
-}).listen(8080);
+});
+
+server.listen(1337, "10.0.1.81");
+console.log("서버가 시작되었습니다");
